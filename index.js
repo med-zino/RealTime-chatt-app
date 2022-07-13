@@ -22,6 +22,10 @@ io.on('connection', (socket) => {
     io.emit('message', 'A user has left the chatt')
   })
 
+  socket.on('chatMessage', (msg) => {
+    io.emit('message', msg)
+  })
+
   // use io.emit to notify all users together
 })
 
