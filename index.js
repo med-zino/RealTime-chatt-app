@@ -1,4 +1,6 @@
 const path = require('path')
+var Filter = require('bad-words')
+
 const express = require('express')
 const http = require('http')
 const socketio = require('socket.io')
@@ -7,6 +9,7 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
+filter = new Filter()
 app.use(express.static(path.join(__dirname, 'public')))
 
 //Run when a cleint connect
@@ -23,7 +26,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('chatMessage', (msg) => {
-    io.emit('message', msg)
+    io.emit('message', filter.clean(msg))
   })
 
   // use io.emit to notify all users together
