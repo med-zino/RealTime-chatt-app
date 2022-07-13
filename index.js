@@ -1,5 +1,6 @@
 const path = require('path')
 var Filter = require('bad-words')
+var Filter2 = require('bad-word-ar')
 
 const express = require('express')
 const http = require('http')
@@ -10,6 +11,8 @@ const server = http.createServer(app)
 const io = socketio(server)
 
 filter = new Filter()
+filter2 = new Filter2('ar')
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 //Run when a cleint connect
@@ -26,7 +29,12 @@ io.on('connection', (socket) => {
   })
 
   socket.on('chatMessage', (msg) => {
-    io.emit('message', filter.clean(msg))
+    var arabic = /[\u0600-\u06FF]/
+    if (arabic.test(msg)) {
+      io.emit('message', filter2.clean(msg))
+    } else {
+      io.emit('message', filter.clean(msg))
+    }
   })
 
   // use io.emit to notify all users together
