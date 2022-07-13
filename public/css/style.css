@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 :root {
-  --dark-color-a: #667aff;
-  --dark-color-b: #7386ff;
-  --light-color: #e6e9ff;
+  --dark-color-a: #1232ff;
+  --dark-color-b: #5f9ff8;
+  --light-color: #5f9ff8;
   --success-color: #5cb85c;
   --error-color: #d9534f;
 }
@@ -18,7 +18,6 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   background: var(--light-color);
-  margin: 20px;
 }
 
 ul {
@@ -33,7 +32,7 @@ a {
   cursor: pointer;
   padding: 5px 15px;
   background: var(--light-color);
-  color: var(--dark-color-a);
+  color: white;
   border: 0;
   font-size: 17px;
 }
@@ -41,9 +40,7 @@ a {
 /* Chat Page */
 
 .chat-container {
-  max-width: 1100px;
   background: #fff;
-  margin: 30px auto;
   overflow: hidden;
 }
 
@@ -101,9 +98,13 @@ a {
 .chat-messages .message .meta {
   font-size: 15px;
   font-weight: bold;
-  color: var(--dark-color-b);
+  color: white;
   opacity: 0.7;
   margin-bottom: 7px;
+}
+
+.chat-messages .message .text {
+  color: white;
 }
 
 .chat-messages .message .meta span {
@@ -144,6 +145,7 @@ a {
 .join-main {
   padding: 30px 40px;
   background: var(--dark-color-b);
+  border: 1px solid;
 }
 
 .join-main p {
@@ -176,6 +178,7 @@ a {
 .join-main .btn {
   margin-top: 20px;
   width: 100%;
+  border: 1px solid;
 }
 
 @media (max-width: 700px) {
