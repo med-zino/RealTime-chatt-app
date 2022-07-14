@@ -1,6 +1,6 @@
 const path = require('path')
-var Filter = require('bad-words')
-var Filter2 = require('bad-word-ar')
+const Filter = require('bad-words')
+const Filter2 = require('bad-word-ar')
 const formatMessage = require('./utils/messages')
 const {
   userJoin,
@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
 
     socket.on('chatMessage', (msg) => {
       const user = getCurrentUser(socket.id)
-      var arabic = /[\u0600-\u06FF]/
+      const arabic = /[\u0600-\u06FF]/
       if (arabic.test(msg)) {
         io.to(user.room).emit(
           'message',
