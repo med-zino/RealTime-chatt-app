@@ -2,6 +2,12 @@ const path = require('path')
 var Filter = require('bad-words')
 var Filter2 = require('bad-word-ar')
 const formatMessage = require('./utils/messages')
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require('./utils/users')
 
 const express = require('express')
 const http = require('http')
@@ -20,27 +26,48 @@ const botName = 'chilChat'
 
 //Run when a cleint connect
 io.on('connection', (socket) => {
-  //emit is used for only the user concerned
-  socket.emit('message', formatMessage(botName, 'Welcome to chatcord'))
+  socket.on('joinRoom', ({ username, room }) => {
+    const user = userJoin(socket.id, username, room)
 
-  // Broadcast when a user connects , it's for all other users expet the
-  // original user
-  socket.broadcast.emit(
-    'message',
-    formatMessage(botName, 'A new user has joined the chatt')
-  )
+    socket.join(user.room)
 
-  socket.on('disconnect', () => {
-    io.emit('message', formatMessage(botName, 'A user has left the chatt'))
-  })
+    //emit is used for only the user concerned
+    socket.emit('message', formatMessage(botName, 'Welcome to chatcord'))
 
-  socket.on('chatMessage', (msg) => {
-    var arabic = /[\u0600-\u06FF]/
-    if (arabic.test(msg)) {
-      io.emit('message', formatMessage('USER', filter2.clean(msg)))
-    } else {
-      io.emit('message', formatMessage('USER', filter.clean(msg)))
-    }
+    // Broadcast when a user connects , it's for all other users expet the
+    // original user
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        'message',
+        formatMessage(botName, `${username} has joined the chatt`)
+      )
+
+    socket.on('disconnect', () => {
+      const user = userLeave(socket.id)
+      if (user) {
+        io.to(user.room).emit(
+          'message',
+          formatMessage(botName, `${user.username} has left the chat`)
+        )
+      }
+    })
+
+    socket.on('chatMessage', (msg) => {
+      const user = getCurrentUser(socket.id)
+      var arabic = /[\u0600-\u06FF]/
+      if (arabic.test(msg)) {
+        io.to(user.room).emit(
+          'message',
+          formatMessage(user.username, filter2.clean(msg))
+        )
+      } else {
+        io.to(user.room).emit(
+          'message',
+          formatMessage(user.username, filter.clean(msg))
+        )
+      }
+    })
   })
 
   // use io.emit to notify all users together
