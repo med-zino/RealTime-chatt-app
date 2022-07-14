@@ -1,5 +1,6 @@
 # RealTime-chatt-app
-a chatt app build using node , express and socket IO . used to public chatt rooms like watching lives or server rooms . with the ability to detect hate speach in difrent languages
+a chatt app build using node , express and socket IO . 
+used to public chatt rooms like watching lives or server rooms . with the ability to detect hate speach in difrent languages
 
 
 To run the app : 
