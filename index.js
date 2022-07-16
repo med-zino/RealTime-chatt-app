@@ -85,6 +85,6 @@ io.on('connection', (socket) => {
   // use io.emit to notify all users together
 })
 
-const PORT = 4000 || process.env.PORT
-
-server.listen(PORT, () => console.log('server running on port 4000'))
+server.listen(process.env.PORT || 4000, () =>
+  console.log('server running on port 4000')
+)
